@@ -1,6 +1,6 @@
 import * as contactsService from "../models/contacts/index.js";
 import { HttpError } from '../helpers/index.js';
-import { conatctAddSchema, conatctUpdateSchema } from "../shemas/contact-shemas.js";
+import { conatctAddSchema, conatctUpdateSchema } from "../schemas/contact-schemas.js";
 
 const getAll = async (req, res, next) => {
 	try {
