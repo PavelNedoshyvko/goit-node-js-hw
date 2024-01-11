@@ -1,6 +1,5 @@
 import Contact from '../models/Contact.js';
 import { HttpError } from '../helpers/index.js';
-// import { contactAddSchema, contactUpdateSchema, contactUpdateFavoriteSchema } from "../schemas/contact-schemas.js";
 
 
 const getAll = async (req, res, next) => {
@@ -27,10 +26,6 @@ const getById = async (req, res, next) => {
 
 const add = async (req, res, next) => {
 	try {
-		// const { error } = contactAddSchema.validate(req.body);
-		// if (error) {
-		// 	throw HttpError(400, error.message);
-		// }
 		const result = await Contact.create(req.body);
 		res.status(201).json(result);
 	} catch (error) {
@@ -53,10 +48,6 @@ const deleteById = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
 	try {
-		// const { error } = contactUpdateSchema.validate(req.body);
-		// if (error) {
-		// 	throw HttpError(400, error.message);
-		// }
 		const { contactId } = req.params;
 		const result = await Contact.findByIdAndUpdate(contactId, req.body);
 		if (!result) {
@@ -70,10 +61,6 @@ const updateById = async (req, res, next) => {
 
 const updateStatusContact = async (req, res, next) => {
 	try {
-		// const { error } = contactUpdateFavoriteSchema.validate(req.body);
-		// if (error) {
-		// 	throw HttpError(400, error.message);
-		// }
 		const { contactId } = req.params;
 		const result = await Contact.findByIdAndUpdate(contactId, req.body);
 		if (!result) {
