@@ -9,7 +9,7 @@ const getAll = async (req, res, next) => {
 		const { page = 1, limit = 5, favorite } = req.query;
 		const skip = (page - 1) * limit;
 		if (favorite) {
-			searchCriteria.favorite = true;
+			searchCriteria.favorite = favorite;
 		}
 		const result = await Contact.find(searchCriteria, "", { skip, limit });
 		res.json(result);
