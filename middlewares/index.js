@@ -7,3 +7,4 @@ export { default as validateContactUpdateFavoriteSchema } from './validateContac
 export { default as validateUserAuthSchema } from './validateUserAuthSchema.js';
 export { default as authenticate } from './authenticate.js';
 export { default as validateUserUpdateSubscriptionsSchema } from './validateUserUpdateSubscriptionsSchema.js';
+export { default as upload } from './upload.js';

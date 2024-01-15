@@ -1,11 +1,17 @@
+import fs from 'fs/promises';
+import path from 'path';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import gravatar from "gravatar";
+import Jimp from 'jimp';
 import "dotenv/config.js";
 import User from "../models/User.js";
 import { HttpError } from '../helpers/index.js';
 
 
 const { JWT_SECRET } = process.env;
+
+const avatarPath = path.resolve("public", "avatars");
 
 
 const register = async (req, res, next) => {
@@ -18,7 +24,9 @@ const register = async (req, res, next) => {
 
 		const hashPassword = await bcrypt.hash(password, 10);
 
-		const newUser = await User.create({ ...req.body, password: hashPassword });
+		const gravatarURL = gravatar.url(email, { d: 'identicon' });
+
+		const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL: gravatarURL });
 
 		res.status(201).json({
 			user: {
@@ -92,10 +100,33 @@ const updateUserSubscription = async (req, res, next) => {
 	}
 }
 
+const updateAvatar = async (req, res, next) => {
+	try {
+		const { _id } = req.user;
+		const { path: oldPath, filename } = req.file;
+		const newPath = path.join(avatarPath, filename);
+
+		const avatar = await Jimp.read(oldPath);
+		await avatar.resize(250, 250).writeAsync(newPath);
+
+		await fs.unlink(oldPath);
+
+		const newAvatarURL = path.join("avatars", filename);
+
+		await User.findByIdAndUpdate(_id, { avatarURL: newAvatarURL });
+		res.json({
+			avatarURL: newAvatarURL,
+		});
+	} catch (error) {
+		next(error);
+	}
+}
+
 export default {
 	register,
 	login,
 	getCurrent,
 	logout,
 	updateUserSubscription,
+	updateAvatar,
 }
