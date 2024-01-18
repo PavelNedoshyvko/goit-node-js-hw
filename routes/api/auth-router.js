@@ -3,8 +3,9 @@ import authController from "../../controllers/auth-controller.js";
 import {
 	isEmptyBody,
 	validateUserAuthSchema,
-	authenticate,
+	validateUserEmailSchema,
 	validateUserUpdateSubscriptionsSchema,
+	authenticate,
 	upload
 } from '../../middlewares/index.js';
 
@@ -13,6 +14,10 @@ const authRouter = express.Router();
 
 
 authRouter.post("/register", isEmptyBody, validateUserAuthSchema, authController.register);
+
+authRouter.get("/verify/:verificationToken", authController.verify);
+
+authRouter.post("/verify", validateUserEmailSchema, authController.resendVerifyEmail);
 
 authRouter.post("/login", isEmptyBody, validateUserAuthSchema, authController.login);
 
